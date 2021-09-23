@@ -1,23 +1,20 @@
-import java.util.HashMap;
+
+import java.util.EmptyStackException;
+import java.util.Stack;
 
 class Invocer {
-    private final HashMap<String, Command> commandMap = new HashMap<>();
 
-  public void register(String comandName, Command command) {
-      commandMap.put(comandName, command);
-  }
+private Stack<Command> stackCommands = new Stack<>();
 
-  public void execute(String comandName) {
-      Command command = commandMap.get(comandName);
-      if(command == null) {
-          throw new IllegalStateException("no command registered for " + comandName);
-      }
-      command.execute();
-  }
-//  public String undo(String comandName)  {
-//    Command command =
-//
-//      return lestComandName;
-//  }
+public void addCommandtoStech(Command command) {
+    stackCommands.add(command);
+}
 
+public Command undo() {
+    try{
+  stackCommands.pop();
+    } catch (EmptyStackException e) {
+        System.out.println("This stack is empty." + e);
+    }return stackCommands.pop();
+}
 }

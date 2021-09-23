@@ -1,4 +1,5 @@
 interface Command {
-    void execute();
+ //   void execute();
     void unto();
+    void redo();
 }
