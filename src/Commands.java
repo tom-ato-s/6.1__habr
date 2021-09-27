@@ -1,226 +1,203 @@
-import javax.swing.*;
-import java.util.Stack;
-
-class UndoableStringBuilder {
-    private StringBuilder stringBuilder;
-    private Stack<Action> actions = new Stack<Action>(); //invocer
-
-    public UndoableStringBuilder() {
-        stringBuilder = new StringBuilder();
-    }
-
-    public UndoableStringBuilder reverse () {
-        stringBuilder.reverse();     
-        Action action = new Action() {
-            @Override
-            public void undo() {
-                stringBuilder.reverse();
-            }
-        };
-        actions.add(action);
-        return this;
-    }
+//import java.util.Stack;
+//
+// классы команд
+//каждый класс - шаблон создания комманды
+//работает только с получателем,
+// конечным объектом над которым производятся действия
 
 
-
-
-
-    interface Action{
-        public void undo();
-    }
-    class CharAt implements Action {
-        private int i;
-        CharAt(int i) {
-            this.i = i;
-        }
-        @Override
-        public void undo() {
-            stringBuilder.charAt(i);
-        }
-    }
 //////////////////////////////////////////////////////////////////////////////
-    class Length implements Command {
+class Length implements Command {  // класс-шаблон для создания объекта комманды length()
         private final Recever recever;
-
-        Length(Recever recever) {
-            this.recever = recever;
-        }
-
-        @Override
-        public void execute() {
-            recever.length();
-        }
+    int length;
+   public Length(Recever recever) {
+        this.recever = recever;
+        length = recever.length();
+    }
 
         @Override
-        public void unto() {
-
+        public void unto() {  //отменение изменений произведенных данной командой, в данном случае ничего не меняется, но значение повторно расчитывавется
+          recever.length();
         }
     }
 
-    class IndexOf implements Command {
-        private final Recever recever;
-        char ch;
-
-        IndexOf(Recever recever) {
-            this.recever = recever;
-        }
-
-        @Override
-        public void execute() {
-            recever.indexOf(ch);
-        }
-
-        @Override
-        public void unto() {
-        }
-    }
-
-    class SubstringBegin implements Command {
-        private final Recever recever;
-        private int i;
-
-        SubstringBegin(Recever recever) {
-            this.recever = recever;
-        }
-
-        @Override
-        public void execute() {
-            recever.substring(i);
-        }
-
-        @Override
-        public void unto() {
-        }
-    }
-
-    class SubstringBeginEnd implements Command {
-        private final Recever recever;
-        private int i;
-        private int j;
-
-        SubstringBeginEnd(Recever recever) {
-            this.recever = recever;
-        }
-
-        @Override
-        public void execute() {
-            recever.substring(i, j);
-        }
-
-        @Override
-        public void unto() {
-        }
-    }
-
-    class Append implements Command {
+class IndexOf implements Command {   // класс-шаблон для создания объекта комманды  indexOf(ch);
         private final Recever recever;
         private char ch;
-
-        Append(Recever recever) {
+       public int i; //индекс
+        public IndexOf(Recever recever, char ch) { //конструктор
             this.recever = recever;
+            i = recever.indexOf(ch);
         }
-
         @Override
-        public void execute() {
-            recever.append(ch);
-        }
-
-        @Override
-        public void unto() {
-
+        public void unto() {     //отменение изменений произведенных данной командой, в данном случае ничего не меняется, но значение повторно расчитывавется
+            i = recever.indexOf(ch);
         }
     }
 
-    class Insert implements Command {
+class SubstringBegin implements Command {  // класс-шаблон для создания объекта комманды  substring(i)
         private final Recever recever;
-        private int i;
-        private char ch;
+        private int i; // первый индекс подстроки
+        StringBuilder sub; // подстрока
+    StringBuilder reReceverSubctring; //
 
-        Insert(Recever recever) {
+       public SubstringBegin(Recever recever, int i) {
             this.recever = recever;
+            this.i = i;
+            reReceverSubctring = recever.getStringBuilder();
+            sub = recever.substring(i);
+
+        }
+
+       public StringBuilder getSubstringBegin() {
+           return sub;
         }
 
         @Override
-        public void execute() {
-            recever.insert(i, ch);
+        public void unto() {   //отменение изменений произведенных данной командой
+            recever.setStringBuilder(reReceverSubctring);
         }
-
-        @Override
-        public void unto() {
-        }
-    }
-
-    class Delete implements Command {
-        private final Recever recever;
-        private int start;
-        private int fin;
-
-        Delete(Recever recever) {
-            this.recever = recever;
-        }
-
-        @Override
-        public void execute() {
-            recever.delete(start, fin);
-        }
-
-        @Override
-        public void unto() {
-        }
-    }
-
-    class DeleteCharAt implements Command {
-        private final Recever recever;
-        private int i;
-
-        DeleteCharAt(Recever recever) {
-            this.recever = recever;
-        }
-
-        @Override
-        public void execute() {
-            recever.deleteCharAt(i);
-        }
-
-        @Override
-        public void unto() {
-        }
-    }
-
-    class Reverse implements Command {
-        private final Recever recever;
-        private StringBuilder stringBuilder;
-
-        Reverse(Recever recever) {
-            this.recever = recever;
-        }
-
-        @Override
-        public void execute() {
-            recever.reverse(stringBuilder);
-        }
-
-        @Override
-        public void unto() {
-        }
-    }
-
-    class ToString_ implements Command {
-        private final Recever recever;
-        private StringBuilder stringBuilder;
-
-        ToString_(Recever recever) {
-            this.recever = recever;
-        }
-
-        @Override
-        public void execute() {
-            recever.toString_(stringBuilder);
-        }
-
-        @Override
-        public void unto() {
-        }
-    }
-
 }
+
+class Delete implements Command { // класс-шаблон для создания объекта комманды delete(start, fin)
+    private final Recever recever;
+    private int start;
+    private int fin;
+    StringBuilder preResever;
+
+    Delete(Recever recever, int start, int fin) { //конструктор для создания шаблона
+        this.recever = recever;
+        this.start = start;
+        this.fin = fin;
+        preResever = recever.getStringBuilder();
+
+        recever.setStringBuilder( recever.delete(start, fin));
+    }
+
+    public StringBuilder getDelete() {  //возврат значения измененной строки
+        return recever.getStringBuilder();
+    }
+
+    @Override
+    public void unto() {    //отменение изменений произведенных данной командой
+        recever.setStringBuilder(preResever);
+    }
+}
+
+
+
+
+//    class SubstringBeginEnd implements Command {
+//        private final Recever recever;
+//        private int i;
+//        private int j;
+//
+//        SubstringBeginEnd(Recever recever) {
+//            this.recever = recever;
+//        }
+//
+//        @Override
+//        public void execute() {
+//            recever.substring(i, j);
+//        }
+//
+//        @Override
+//        public void unto() {
+//        }
+//    }
+//
+//    class Append implements Command {
+//        private final Recever recever;
+//        private char ch;
+//
+//        Append(Recever recever) {
+//            this.recever = recever;
+//        }
+//
+//        @Override
+//        public void execute() {
+//            recever.append(ch);
+//        }
+//
+//        @Override
+//        public void unto() {
+//
+//        }
+//    }
+//
+//    class Insert implements Command {
+//        private final Recever recever;
+//        private int i;
+//        private char ch;
+//
+//        Insert(Recever recever) {
+//            this.recever = recever;
+//        }
+//
+//        @Override
+//        public void execute() {
+//            recever.insert(i, ch);
+//        }
+//
+//        @Override
+//        public void unto() {
+//        }
+//    }
+//
+
+//
+//    class DeleteCharAt implements Command {
+//        private final Recever recever;
+//        private int i;
+//
+//        DeleteCharAt(Recever recever) {
+//            this.recever = recever;
+//        }
+//
+//        @Override
+//        public void execute() {
+//            recever.deleteCharAt(i);
+//        }
+//
+//        @Override
+//        public void unto() {
+//        }
+//    }
+//
+//    class Reverse implements Command {
+//        private final Recever recever;
+//        private StringBuilder stringBuilder;
+//
+//        Reverse(Recever recever) {
+//            this.recever = recever;
+//        }
+//
+//        @Override
+//        public void execute() {
+//            recever.reverse(stringBuilder);
+//        }
+//
+//        @Override
+//        public void unto() {
+//        }
+//    }
+//
+//    class ToString_ implements Command {
+//        private final Recever recever;
+//        private StringBuilder stringBuilder;
+//
+//        ToString_(Recever recever) {
+//            this.recever = recever;
+//        }
+//
+//        @Override
+//        public void execute() {
+//            recever.toString_(stringBuilder);
+//        }
+//
+//        @Override
+//        public void unto() {
+//        }
+//    }
+//
+//}

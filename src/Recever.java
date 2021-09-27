@@ -1,11 +1,25 @@
+//класс-получатель.
+//В нем находится непосредственно страка StringBuilder, над которой проводяться действия
+// и методы, которые  проводят действия над строкой StringBuilder
+//и get и set, для изменения строки StringBuilder
+
 class Recever{
 
-    StringBuilder stringBuilder;
+    private StringBuilder stringBuilder;  // стока над которой будут проводиться действия
 
+    public StringBuilder getStringBuilder() {
+        return stringBuilder;
+    }  //геттер
 
-    Recever(StringBuilder stringBuilder) {
+    public void setStringBuilder(StringBuilder sb) {
+        stringBuilder = sb;
+    } // сеттер
+
+    Recever(StringBuilder stringBuilder) {  //конструктор для создания строки
         this.stringBuilder = stringBuilder;
     }
+
+// меторы для работы со строкой
 
 
     public char charAt(int i) {
@@ -33,7 +47,8 @@ class Recever{
     }
 
 
-    public void append(char ch) {stringBuilder.append(ch);}
+    public void append(char ch) {
+        stringBuilder.append(ch);}
 
 
     public void insert(int i, char ch) {
@@ -41,8 +56,8 @@ class Recever{
     }
 
 
-    public void delete(int start, int fin) {
-stringBuilder.delete(start, fin);
+    public StringBuilder delete(int start, int fin) {
+return stringBuilder.delete(start, fin);
     }
 
 
