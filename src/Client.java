@@ -11,8 +11,8 @@ public class Client {
 //       };
 //    }
     public static void main(String[] args) {
-        StringBuilder stringBuilder = new StringBuilder("Мадагаскар");//входные данные для проверка работы программы
-        Recever recever = new Recever(stringBuilder);   //создаем новый StringBuilder  и передаем ему входные данные
+        StringBuilder stringBuilder = new StringBuilder("Мадогускар");//входные данные для проверка работы программы для Recever
+        ;  Recever recever = new Recever(stringBuilder); //создаем новый объект StringBuilder  и передаем ему входные данные
         Invocer invocer = new Invocer();  //создается общий один стек команд
 
         Command comLength = new Length(recever);  // создание объекта команды
@@ -20,7 +20,7 @@ public class Client {
         int length = ((Length)comLength).length; //искомая длинна stringBuilder
 
         System.out.println(length); //печать полученного значени от создания команды
-        invocer.printSteck();
+  //      invocer.printSteck();
 
         Command comIndexOf = new IndexOf(recever, 'М');  // создание объекта команды
         invocer.addCommandtoStech(comIndexOf);  // добавление комманды в стек
@@ -30,11 +30,19 @@ public class Client {
         invocer.addCommandtoStech(comSubstringBegin); // добавление комманды в стек
         StringBuilder subs = ((SubstringBegin) comSubstringBegin).getSubstringBegin();  // новая созданая часть строки
 
-        Command comDelete = new Delete(recever, 1, 3);  // создание объекта команды
-        invocer.addCommandtoStech(comDelete); // добавление комманды в стек
-        StringBuilder sbDelete = ((Delete)comDelete).getDelete(); // измененная строка после удаления
+        System.out.println(recever.getStringBuilder()+ " до команды delite");
 
-        System.out.println(sbDelete);
+        Command comDelete = new Delete(recever, 4, 6);  // создание объекта команды
+        invocer.addCommandtoStech(comDelete); // добавление комманды в стек
+   //     StringBuilder sbDelete = ((Delete)comDelete).getDelete(); // измененная строка после удаления
+
+        System.out.println(recever.getStringBuilder()+ " после команды delite");
+
+
+
+       Command comundo = invocer.undoForCommand();
+
+        System.out.println(recever.getStringBuilder()+ " после команды undo");
 
 
 
@@ -54,9 +62,6 @@ public class Client {
 
 
 
-        invocer.addCommandtoStech(comLength);
-
-
 
 //        System.out.println(invocer);
 //        invocer.register("NameCharAt", comCharAt);
@@ -70,7 +75,7 @@ public class Client {
 //        invocer.register("NameReverse", comReverse);
 //        invocer.register("NameToString_", comToString_);
 //
-        invocer.undo();
+
 
 //        invocer.execute("NameCharAt");
 

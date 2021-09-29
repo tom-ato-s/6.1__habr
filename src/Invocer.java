@@ -16,9 +16,10 @@ public void addCommandtoStech(Command command) { //добавление комм
     stackCommands.add(command);
 }
 
-public Command undo() {  //извлечение последней занесенной команды из стека
+public Command undoForCommand() {  //извлечение последней занесенной команды из стека
     try{
-  stackCommands.pop();
+  stackCommands.pop().undo();
+
     } catch (EmptyStackException e) {
         System.out.println("This stack is empty." + e);
     }return stackCommands.pop();

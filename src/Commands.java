@@ -16,7 +16,7 @@ class Length implements Command {  // класс-шаблон для созда�
     }
 
         @Override
-        public void unto() {  //отменение изменений произведенных данной командой, в данном случае ничего не меняется, но значение повторно расчитывавется
+        public void undo() {  //отменение изменений произведенных данной командой, в данном случае ничего не меняется, но значение повторно расчитывавется
           recever.length();
         }
     }
@@ -30,7 +30,7 @@ class IndexOf implements Command {   // класс-шаблон для созд�
             i = recever.indexOf(ch);
         }
         @Override
-        public void unto() {     //отменение изменений произведенных данной командой, в данном случае ничего не меняется, но значение повторно расчитывавется
+        public void undo() {     //отменение изменений произведенных данной командой, в данном случае ничего не меняется, но значение повторно расчитывавется
             i = recever.indexOf(ch);
         }
     }
@@ -54,7 +54,7 @@ class SubstringBegin implements Command {  // класс-шаблон для с�
         }
 
         @Override
-        public void unto() {   //отменение изменений произведенных данной командой
+        public void undo() {   //отменение изменений произведенных данной командой
             recever.setStringBuilder(reReceverSubctring);
         }
 }
@@ -63,15 +63,19 @@ class Delete implements Command { // класс-шаблон для создан
     private final Recever recever;
     private int start;
     private int fin;
-    StringBuilder preResever;
+    static StringBuilder preResever = new StringBuilder();
 
     Delete(Recever recever, int start, int fin) { //конструктор для создания шаблона
         this.recever = recever;
         this.start = start;
         this.fin = fin;
-        preResever = recever.getStringBuilder();
+
+        preResever = recever.substring(start, fin);
+  //      System.out.println(recever.getStringBuilder()+ " значение из метода до Delete");
 
         recever.setStringBuilder( recever.delete(start, fin));
+
+   //     System.out.println(recever.getStringBuilder()+ " значение из метода после Delete");
     }
 
     public StringBuilder getDelete() {  //возврат значения измененной строки
@@ -79,8 +83,13 @@ class Delete implements Command { // класс-шаблон для создан
     }
 
     @Override
-    public void unto() {    //отменение изменений произведенных данной командой
-        recever.setStringBuilder(preResever);
+    public void undo() {    //отменение изменений произведенных данной командой
+        StringBuilder temp = new StringBuilder();
+        temp.append(recever.substring(0, start));
+        temp.append(preResever);
+        temp.append(recever.substring(start, recever.length()));
+        recever.setStringBuilder(temp);
+
     }
 }
 
