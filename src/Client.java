@@ -38,12 +38,28 @@ public class Client {
 
         System.out.println(recever.getStringBuilder()+ " после команды delite");
 
-
-
        Command comundo = invocer.undoForCommand();
 
         System.out.println(recever.getStringBuilder()+ " после команды undo");
 
+        Command comAppend = new Append(recever, 'F');//создание объекта команды
+        invocer.addCommandtoStech(comAppend); // добавление команды в стек
+
+        System.out.println(recever.getStringBuilder() + " после команды append");
+
+        invocer.undoForCommand();
+        System.out.println(recever.getStringBuilder() + " после команды undo");
+//        invocer.undoForCommand();
+//        System.out.println(recever.getStringBuilder() + " после команды undo");
+
+        Command comReverse = new Reverse(recever);
+        invocer.addCommandtoStech(comReverse);
+
+        System.out.println(recever.getStringBuilder() + " после команды reverse");
+
+        invocer.undoForCommand();
+
+        System.out.println(recever.getStringBuilder() + " после команды undo");
 
 
 
@@ -53,31 +69,12 @@ public class Client {
 //
 // Command comCharAt = new CharAt(recever);
 //        Command comSubstringBeginEnd = new SubstringBeginEnd(recever);
-//        Command comAppend = new Append(recever);
+//
 //        Command comInsert = new Insert(recever);
 //
 //        Command comDeleteCharAt = new DeleteCharAt(recever);
 //        Command comReverse = new Reverse(recever);
 //        Command comToString_ = new ToString_(recever);
-
-
-
-
-//        System.out.println(invocer);
-//        invocer.register("NameCharAt", comCharAt);
-//        invocer.register("NameIndexOf", comIndexOf);
-//
-//        invocer.register("MameSubstringBegin", comSubstringBegin);
-//        invocer.register("NameSubstringBeginEnd", comSubstringBeginEnd);
-//        invocer.register("NameAppend", comAppend);
-//        invocer.register("NameInsert", comInsert);
-//        invocer.register("NameDeleteCharAt", comDeleteCharAt);
-//        invocer.register("NameReverse", comReverse);
-//        invocer.register("NameToString_", comToString_);
-//
-
-
-//        invocer.execute("NameCharAt");
 
     }
 }

@@ -69,17 +69,8 @@ class Delete implements Command { // класс-шаблон для создан
         this.recever = recever;
         this.start = start;
         this.fin = fin;
-
-        preResever = recever.substring(start, fin);
-  //      System.out.println(recever.getStringBuilder()+ " значение из метода до Delete");
-
+        preResever = recever.substring(start, fin); // удаленная часть строки
         recever.setStringBuilder( recever.delete(start, fin));
-
-   //     System.out.println(recever.getStringBuilder()+ " значение из метода после Delete");
-    }
-
-    public StringBuilder getDelete() {  //возврат значения измененной строки
-        return recever.getStringBuilder();
     }
 
     @Override
@@ -92,6 +83,58 @@ class Delete implements Command { // класс-шаблон для создан
 
     }
 }
+
+
+    class Append implements Command {
+        private final Recever recever;
+        private char ch;
+        char tempCh;
+
+        Append(Recever recever, char ch)  { // команда добавления бкувы в конец строки
+            this.recever = recever;
+            this.ch = ch;
+            tempCh = ch;
+            recever.getStringBuilder().append(ch);
+        }
+
+        @Override
+        public void undo() {
+            int lestIndex = recever.length()-1;
+            recever.getStringBuilder().deleteCharAt(lestIndex);
+        }
+    }
+
+
+    class Reverse implements Command {
+        private final Recever recever;
+        private StringBuilder stringBuilder;
+        private StringBuilder preRevers = new StringBuilder();
+        StringBuilder temp = new StringBuilder();
+
+        Reverse(Recever recever) {
+            this.recever = recever;
+            stringBuilder = recever.getStringBuilder();
+            preRevers.append(stringBuilder);
+            recever.setStringBuilder(reverseString(stringBuilder));
+            System.out.println(recever.getStringBuilder() + "  ");
+        }
+
+
+        private StringBuilder reverseString(StringBuilder sb) {
+            int length = sb.length();
+            for( int i = 0; i<length; i++) {
+            temp.append(sb.charAt (length-1-i));
+            }
+            return temp;
+        }
+
+
+        @Override
+        public void undo() {
+            recever.setStringBuilder(preRevers);
+        }
+    }
+
 
 
 
@@ -115,24 +158,7 @@ class Delete implements Command { // класс-шаблон для создан
 //        }
 //    }
 //
-//    class Append implements Command {
-//        private final Recever recever;
-//        private char ch;
-//
-//        Append(Recever recever) {
-//            this.recever = recever;
-//        }
-//
-//        @Override
-//        public void execute() {
-//            recever.append(ch);
-//        }
-//
-//        @Override
-//        public void unto() {
-//
-//        }
-//    }
+
 //
 //    class Insert implements Command {
 //        private final Recever recever;
@@ -173,23 +199,7 @@ class Delete implements Command { // класс-шаблон для создан
 //        }
 //    }
 //
-//    class Reverse implements Command {
-//        private final Recever recever;
-//        private StringBuilder stringBuilder;
-//
-//        Reverse(Recever recever) {
-//            this.recever = recever;
-//        }
-//
-//        @Override
-//        public void execute() {
-//            recever.reverse(stringBuilder);
-//        }
-//
-//        @Override
-//        public void unto() {
-//        }
-//    }
+
 //
 //    class ToString_ implements Command {
 //        private final Recever recever;
