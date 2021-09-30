@@ -22,20 +22,13 @@ class Recever{
 // меторы для работы со строкой
 
 
-    public char charAt(int i) {
-        return stringBuilder.charAt(i);
-    }
-
-
-    public int indexOf(char ch) {
-        return stringBuilder.indexOf(String.valueOf(ch));
-    }
-
-
     public int length() {
         return stringBuilder.length();
     }
 
+    public int indexOf(char ch) {
+        return stringBuilder.indexOf(String.valueOf(ch));
+    }
 
     public StringBuilder substring(int i) {
         return new StringBuilder(stringBuilder.substring(i));
@@ -46,32 +39,22 @@ class Recever{
         return new StringBuilder(stringBuilder.substring(i, j));
     }
 
+    public StringBuilder delete(int start, int fin) {
+        return stringBuilder.delete(start, fin);
+    }
 
     public void append(char ch) {
         stringBuilder.append(ch);}
 
+    public StringBuilder reverse() {
+        int length = stringBuilder.length();
+        StringBuilder temp = new StringBuilder();
 
-    public void insert(int i, char ch) {
-        stringBuilder.insert(i, ch);
+        for( int i = 0; i<length; i++) {
+            temp.append(stringBuilder.charAt(length - 1 - i));
+        }
+        stringBuilder = temp;
+        return stringBuilder;
     }
 
-
-    public StringBuilder delete(int start, int fin) {
-return stringBuilder.delete(start, fin);
-    }
-
-
-    public void deleteCharAt(int i) {
-stringBuilder.deleteCharAt(i);
-    }
-
-
-    public StringBuilder reverse(StringBuilder stringBuilder) {
-        return new StringBuilder(stringBuilder.reverse());
-    }
-
-
-    public void toString_(StringBuilder stringBuilder) {
-        stringBuilder.toString();
-    }
 }

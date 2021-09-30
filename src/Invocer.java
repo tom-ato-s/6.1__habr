@@ -12,7 +12,7 @@ class Invocer {
 
 private Stack<Command> stackCommands = new Stack<>();  //создание стека команд
 
-public void addCommandtoStech(Command command) { //добавление комманды в стек
+public void addCommandToStack(Command command) { //добавление комманды в стек
     stackCommands.add(command);
 }
 
